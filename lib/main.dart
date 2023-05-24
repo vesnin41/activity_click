@@ -1,9 +1,16 @@
 import 'package:activity_click/home.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:provider/single_child_widget.dart';
 
 void main() {
-  runApp(const MainApp());
+  runApp(MultiProvider(providers: providers, child: const MainApp()));
 }
+
+List<SingleChildWidget> providers = [
+  ChangeNotifierProvider<ActivityDataProvider>(
+      create: (_) => ActivityDataProvider()),
+];
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -17,4 +24,3 @@ class MainApp extends StatelessWidget {
     );
   }
 }
-

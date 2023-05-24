@@ -1,20 +1,20 @@
 class ActivityModel {
-  String activity;
-  String type;
-  int participants;
-  double price;
-  String link;
-  String key;
-  double accessibility;
+  String? activity;
+  String? type;
+  int? participants;
+  double? price;
+  String? link;
+  String? key;
+  double? accessibility;
 
   ActivityModel(
-      {required this.activity,
-      required this.type,
-      required this.participants,
-      required this.price,
-      required this.link,
-      required this.key,
-      required this.accessibility});
+      {this.activity,
+      this.type,
+      this.participants,
+      this.price,
+      this.link,
+      this.key,
+      this.accessibility});
 
   factory ActivityModel.fromJson(Map<String, dynamic> json) => ActivityModel(
         activity: json["activity"],

@@ -6,7 +6,7 @@ import 'package:activity_click/constans.dart';
 import 'package:activity_click/activity_model.dart';
 
 class ApiService {
-  Future<ActivityModel?> getActivity() async {
+  Future<ActivityModel?> getActivity(context) async {
     try {
       var url = Uri.parse(ApiConstants.baseUrl + ApiConstants.usersEndpoint);
       var response = await http.get(url);
