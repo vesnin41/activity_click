@@ -34,18 +34,17 @@ class Home extends StatelessWidget {
       body: SafeArea(
         child: Column(children: [
           if (postMdl.loading == true) ...[
-            const CircularProgressIndicator()
+            const Center(child: CircularProgressIndicator())
           ] else if (postMdl.listOfActivityModels.isEmpty) ...[
             Center(child: Image.asset('images/4-06.png'))
-          ] else if (postMdl.listOfActivityModels.isNotEmpty &&
-              postMdl.listOfActivityModels.last != null) ...[
+          ] else if (postMdl.listOfActivityModels.isNotEmpty) ...[
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 50.0),
                   child: Text(
-                    postMdl.listOfActivityModels.last!.type,
+                    postMdl.listOfActivityModels.last.type,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 32),
                   ),
@@ -58,23 +57,23 @@ class Home extends StatelessWidget {
                         ListTile(
                           leading: const Icon(Icons.sports_sharp),
                           title:
-                              Text(postMdl.listOfActivityModels.last!.activity),
+                              Text(postMdl.listOfActivityModels.last.activity),
                         ),
                         ListTile(
                           leading: const Icon(Icons.groups),
                           title: Text(postMdl
-                              .listOfActivityModels.last!.participants
+                              .listOfActivityModels.last.participants
                               .toString()),
                         ),
                         ListTile(
                           leading: const Icon(Icons.price_change_rounded),
-                          title: Text(postMdl.listOfActivityModels.last!.price
+                          title: Text(postMdl.listOfActivityModels.last.price
                               .toString()),
                         ),
                         ListTile(
                           leading: const Text("Accessibility: "),
                           title: Text(postMdl
-                              .listOfActivityModels.last!.accessibility
+                              .listOfActivityModels.last.accessibility
                               .toString()),
                         ),
                       ],
@@ -83,9 +82,7 @@ class Home extends StatelessWidget {
                 ),
               ],
             ),
-          ] else ...[
-            const Text('Try one more!')
-          ]
+          ],
         ]),
       ),
     );
@@ -93,7 +90,7 @@ class Home extends StatelessWidget {
 }
 
 class ActivityDataProvider with ChangeNotifier {
-  List<ActivityModel?> listOfActivityModels = [];
+  List<ActivityModel> listOfActivityModels = [];
   bool loading = false;
   void getData(context) async {
     loading = true;
