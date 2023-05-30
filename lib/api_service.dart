@@ -10,6 +10,7 @@ class ApiService {
     try {
       var url = Uri.parse(ApiConstants.baseUrl + ApiConstants.usersEndpoint);
       var response = await http.get(url);
+      log(response.statusCode.toString());
       if (response.statusCode == 200) {
         ActivityModel model =
             ActivityModel.fromJson(json.decode(response.body));

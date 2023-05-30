@@ -10,6 +10,7 @@ void main() {
 List<SingleChildWidget> providers = [
   ChangeNotifierProvider<ActivityDataProvider>(
       create: (_) => ActivityDataProvider()),
+  Provider<bool>(create: ((context) => true)),
 ];
 
 class MainApp extends StatelessWidget {

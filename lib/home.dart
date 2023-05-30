@@ -3,26 +3,12 @@ import 'package:activity_click/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class Home extends StatefulWidget {
+class Home extends StatelessWidget {
   const Home({
     super.key,
   });
 
-  @override
-  State<Home> createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   // void getData() async {
-  //   activityModel = (await ApiService().getActivity());
-  //   Future.delayed(const Duration(seconds: 3)).then((value) => setState(() {}));
-  // }
-
   @override
   Widget build(BuildContext context) {
     final postMdl = Provider.of<ActivityDataProvider>(context);
@@ -49,14 +35,17 @@ class _HomeState extends State<Home> {
         child: Column(children: [
           if (postMdl.loading == true) ...[
             const CircularProgressIndicator()
-          ] else ...[
+          ] else if (postMdl.listOfActivityModels.isEmpty) ...[
+            Center(child: Image.asset('images/4-06.png'))
+          ] else if (postMdl.listOfActivityModels.isNotEmpty &&
+              postMdl.listOfActivityModels.last != null) ...[
             Column(
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 Padding(
                   padding: const EdgeInsets.only(top: 50.0),
                   child: Text(
-                    postMdl.activityModel!.type!.toUpperCase(),
+                    postMdl.listOfActivityModels.last!.type,
                     style: const TextStyle(
                         fontWeight: FontWeight.bold, fontSize: 32),
                   ),
@@ -68,21 +57,25 @@ class _HomeState extends State<Home> {
                       children: [
                         ListTile(
                           leading: const Icon(Icons.sports_sharp),
-                          title: Text(postMdl.activityModel!.activity!),
+                          title:
+                              Text(postMdl.listOfActivityModels.last!.activity),
                         ),
                         ListTile(
                           leading: const Icon(Icons.groups),
-                          title: Text(
-                              postMdl.activityModel!.participants.toString()),
+                          title: Text(postMdl
+                              .listOfActivityModels.last!.participants
+                              .toString()),
                         ),
                         ListTile(
                           leading: const Icon(Icons.price_change_rounded),
-                          title: Text(postMdl.activityModel!.price.toString()),
+                          title: Text(postMdl.listOfActivityModels.last!.price
+                              .toString()),
                         ),
                         ListTile(
                           leading: const Text("Accessibility: "),
-                          title: Text(
-                              postMdl.activityModel!.accessibility.toString()),
+                          title: Text(postMdl
+                              .listOfActivityModels.last!.accessibility
+                              .toString()),
                         ),
                       ],
                     ),
@@ -90,6 +83,8 @@ class _HomeState extends State<Home> {
                 ),
               ],
             ),
+          ] else ...[
+            const Text('Try one more!')
           ]
         ]),
       ),
@@ -98,13 +93,14 @@ class _HomeState extends State<Home> {
 }
 
 class ActivityDataProvider with ChangeNotifier {
-  ActivityModel? activityModel = ActivityModel();
+  // late ActivityModel activityModel;
+  List<ActivityModel?> listOfActivityModels = [];
   bool loading = false;
   void getData(context) async {
     loading = true;
-    activityModel = await ApiService().getActivity(context);
+    notifyListeners();
+    listOfActivityModels.add((await ApiService().getActivity(context))!);
     loading = false;
-
     notifyListeners();
   }
 }
