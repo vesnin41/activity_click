@@ -93,7 +93,6 @@ class Home extends StatelessWidget {
 }
 
 class ActivityDataProvider with ChangeNotifier {
-  // late ActivityModel activityModel;
   List<ActivityModel?> listOfActivityModels = [];
   bool loading = false;
   void getData(context) async {
