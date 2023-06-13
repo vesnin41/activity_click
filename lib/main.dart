@@ -1,4 +1,5 @@
-import 'package:activity_click/home.dart';
+import 'package:activity_click/providers/activity_data_provider.dart';
+import 'package:activity_click/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
@@ -20,8 +21,12 @@ class MainApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Activity Click',
-      theme: ThemeData(useMaterial3: true),
-      home: Home(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        useMaterial3: true,
+        colorSchemeSeed: Colors.blue,
+      ),
+      home: const Home(),
     );
   }
 }
