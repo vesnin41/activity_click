@@ -1,12 +1,9 @@
-import 'package:activity_click/models/activity_model.dart';
 import 'package:activity_click/providers/activity_data_provider.dart';
 import 'package:activity_click/screens/favorite_activities.dart';
 import 'package:activity_click/screens/history_activities.dart';
-import 'package:activity_click/utilities/api/api_service.dart';
 import 'package:activity_click/utilities/launch_link.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 class Home extends StatelessWidget {
   const Home({
@@ -156,10 +153,10 @@ class Home extends StatelessWidget {
                                   onPressed: () {
                                     postMdl.listOfActivityModels.last!
                                             .isFavorite
-                                        ? postMdl.unlikeActivity(postMdl
-                                                .listOfActivityModels.last!)
-                                        : postMdl.likeActivity(postMdl
-                                                .listOfActivityModels.last!);
+                                        ? postMdl.unlikeActivity(
+                                            postMdl.listOfActivityModels.last!)
+                                        : postMdl.likeActivity(
+                                            postMdl.listOfActivityModels.last!);
                                   },
                                   icon: postMdl
                                           .listOfActivityModels.last!.isFavorite
