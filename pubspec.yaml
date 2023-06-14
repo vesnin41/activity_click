@@ -7,6 +7,7 @@ environment:
   sdk: '>=3.0.1 <4.0.0'
 
 dependencies:
+  
   flutter:
     sdk: flutter
   flutter_slidable: ^3.0.0
@@ -21,7 +22,8 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   hive_generator: ^2.0.0
-  
+  build_runner: ^2.4.5
+
 flutter:
   uses-material-design: true
   assets:
