@@ -46,6 +46,7 @@ class Home extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           FloatingActionButton.extended(
+            heroTag: "f1",
             onPressed: () => {
               Provider.of<ActivityDataProvider>(context, listen: false)
                   .getData()
@@ -57,6 +58,7 @@ class Home extends StatelessWidget {
             height: 30,
           ),
           FloatingActionButton.extended(
+            heroTag: "f2",
             onPressed: () => {
               showModalBottomSheet<void>(
                 context: context,
@@ -112,68 +114,102 @@ class Home extends StatelessWidget {
                       child: Column(
                         children: [
                           ListTile(
-                            leading: const Icon(Icons.sports_sharp),
+                            leading: const Icon(
+                              Icons.sports_sharp,
+                              size: 35,
+                            ),
                             title: Text(
-                                postMdl.listOfActivityModels.last!.activity),
+                              postMdl.listOfActivityModels.last!.activity,
+                              style: TextStyle(fontSize: 20),
+                            ),
+                          ),
+                          const Divider(),
+                          ListTile(
+                            leading: const Icon(
+                              Icons.groups,
+                              size: 35,
+                            ),
+                            title: Text(
+                              "Participants: ${postMdl.listOfActivityModels.last!.participants}",
+                              style: TextStyle(fontSize: 20),
+                            ),
                           ),
                           ListTile(
-                            leading: const Icon(Icons.groups),
-                            title: Text(postMdl
-                                .listOfActivityModels.last!.participants
-                                .toString()),
+                            leading: const Icon(
+                              Icons.price_change_rounded,
+                              size: 35,
+                            ),
+                            title: Text(
+                              "Price: ${postMdl.listOfActivityModels.last!.price}",
+                              style: TextStyle(fontSize: 20),
+                            ),
                           ),
                           ListTile(
-                            leading: const Icon(Icons.price_change_rounded),
-                            title: Text(postMdl.listOfActivityModels.last!.price
-                                .toString()),
-                          ),
-                          ListTile(
-                            leading: const Text("Accessibility: "),
-                            title: Text(postMdl
-                                .listOfActivityModels.last!.accessibility
-                                .toString()),
+                            leading: const Icon(
+                              Icons.extension,
+                              size: 35,
+                            ),
+                            title: Text(
+                              "Accessibility: ${postMdl.listOfActivityModels.last!.accessibility}",
+                              style: TextStyle(fontSize: 20),
+                            ),
                           ),
                           // ignore: unrelated_type_equality_checks
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              postMdl.listOfActivityModels.last!.link != ''
-                                  ? IconButton(
-                                      onPressed: () {
-                                        final Uri _url = Uri.parse(postMdl
-                                            .listOfActivityModels.last!.link);
-                                        launchInWebViewOrVC(_url);
-                                      },
-                                      icon: const Icon(Icons.open_in_browser,
-                                          size: 35),
-                                      tooltip: "Open link",
-                                    )
-                                  : const SizedBox(),
-                              IconButton(
-                                  onPressed: () {
-                                    postMdl.listOfActivityModels.last!
-                                            .isFavorite
-                                        ? postMdl.unlikeActivity(
-                                            postMdl.listOfActivityModels.last!)
-                                        : postMdl.likeActivity(
-                                            postMdl.listOfActivityModels.last!);
-                                  },
-                                  icon: postMdl
-                                          .listOfActivityModels.last!.isFavorite
-                                      ? const Icon(
-                                          Icons.favorite,
-                                          size: 35,
-                                        )
-                                      : const Icon(Icons.favorite_outline,
-                                          size: 35),
-                                  color: Colors.red,
-                                  tooltip: "Add to favorite")
-                            ],
-                          )
                         ],
                       ),
                     ),
                   ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      postMdl.listOfActivityModels.last!.link != ''
+                          ? Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 20),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  final Uri _url = Uri.parse(
+                                      postMdl.listOfActivityModels.last!.link);
+                                  launchInWebViewOrVC(_url);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: CircleBorder(),
+                                  padding: EdgeInsets.all(20),
+                                  // <-- Splash color
+                                ),
+                                child:
+                                    const Icon(Icons.open_in_browser, size: 35),
+                              ),
+                            )
+                          : const SizedBox(),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 10, horizontal: 20),
+                        child: ElevatedButton(
+                          onPressed: () {
+                            postMdl.listOfActivityModels.last!.isFavorite
+                                ? postMdl.unlikeActivity(
+                                    postMdl.listOfActivityModels.last!)
+                                : postMdl.likeActivity(
+                                    postMdl.listOfActivityModels.last!);
+                          },
+                          style: ElevatedButton.styleFrom(
+                            shape: CircleBorder(),
+                            padding: EdgeInsets.all(20),
+                            // <-- Splash color
+                          ),
+                          child: postMdl.listOfActivityModels.last!.isFavorite
+                              ? const Icon(
+                                  Icons.favorite,
+                                  size: 35,
+                                  color: Colors.red,
+                                )
+                              : const Icon(Icons.favorite_outline,
+                                  size: 35, color: Colors.red),
+                        ),
+                      ),
+                    ],
+                  )
                 ],
               ),
             ],

@@ -44,23 +44,58 @@ class _FavoriteActivitiesState extends State<FavoriteActivities> {
                             title:
                                 Text(reversedListActivities[index]!.activity),
                           ),
-                          ListTile(
-                            leading: const Icon(Icons.groups),
-                            title: Text(reversedListActivities[index]!
-                                .participants
-                                .toString()),
-                          ),
-                          ListTile(
-                            leading: const Icon(Icons.price_change_rounded),
-                            title: Text(reversedListActivities[index]!
-                                .price
-                                .toString()),
-                          ),
-                          ListTile(
-                            leading: const Text("Accessibility: "),
-                            title: Text(reversedListActivities[index]!
-                                .accessibility
-                                .toString()),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 10, horizontal: 15),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Row(
+                                  children: [
+                                    const Icon(Icons.local_activity),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(reversedListActivities[index]!
+                                        .type
+                                        .toString()),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.groups),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(reversedListActivities[index]!
+                                        .participants
+                                        .toString()),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.price_change_rounded),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(reversedListActivities[index]!
+                                        .price
+                                        .toString()),
+                                  ],
+                                ),
+                                Row(
+                                  children: [
+                                    const Icon(Icons.extension),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(reversedListActivities[index]!
+                                        .accessibility
+                                        .toString()),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
@@ -81,8 +116,10 @@ class _FavoriteActivitiesState extends State<FavoriteActivities> {
                               IconButton(
                                   onPressed: () {
                                     reversedListActivities[index]!.isFavorite
-                                        ? postMdl.unlikeActivity(reversedListActivities[index]!)
-                                        : postMdl.likeActivity(reversedListActivities[index]!);
+                                        ? postMdl.unlikeActivity(
+                                            reversedListActivities[index]!)
+                                        : postMdl.likeActivity(
+                                            reversedListActivities[index]!);
                                   },
                                   icon:
                                       reversedListActivities[index]!.isFavorite

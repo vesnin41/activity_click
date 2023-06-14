@@ -39,4 +39,9 @@ class ActivityDataProvider with ChangeNotifier {
     }
     notifyListeners();
   }
+
+  void deleteActivity(ActivityModel activity) {
+    listOfActivityModels.remove(activity);
+    notifyListeners();
+  }
 }
