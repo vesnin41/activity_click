@@ -16,6 +16,7 @@ class _HistoryActivitiesState extends State<HistoryActivities> {
   @override
   Widget build(BuildContext context) {
     final postMdl = Provider.of<ActivityDataProvider>(context);
+
     final List<ActivityModel?> reversedListActivities =
         postMdl.listOfActivityModels.reversed.toList();
 
@@ -45,9 +46,7 @@ class _HistoryActivitiesState extends State<HistoryActivities> {
                     postMdl.unlikeActivity(reversedListActivities[index]!);
                   }
 
-                  void doNothing(BuildContext context) {}
-
-                  void deleteActivity(BuildContext context) {
+                  Future<void> deleteActivity(BuildContext context) async {
                     postMdl.deleteActivity(reversedListActivities[index]!);
                   }
 
@@ -68,7 +67,7 @@ class _HistoryActivitiesState extends State<HistoryActivities> {
                         // A SlidableAction can have an icon and/or a label.
                         SlidableAction(
                           onPressed: deleteActivity,
-                          backgroundColor: Color(0xFFFE4A49),
+                          backgroundColor: Colors.red,
                           foregroundColor: Colors.white,
                           icon: Icons.delete,
                           label: 'Delete',
@@ -78,14 +77,14 @@ class _HistoryActivitiesState extends State<HistoryActivities> {
                                 onPressed: unlikeActivity,
                                 backgroundColor: Colors.blue,
                                 foregroundColor: Colors.white,
-                                icon: Icons.favorite,
+                                icon: Icons.thumb_down,
                                 label: 'Dislike',
                               )
                             : SlidableAction(
                                 onPressed: likeActivity,
                                 backgroundColor: Colors.green,
                                 foregroundColor: Colors.white,
-                                icon: Icons.favorite,
+                                icon: Icons.thumb_up,
                                 label: 'Like',
                               ),
                       ],
@@ -104,19 +103,19 @@ class _HistoryActivitiesState extends State<HistoryActivities> {
                                 onPressed: unlikeActivity,
                                 backgroundColor: Colors.blue,
                                 foregroundColor: Colors.white,
-                                icon: Icons.favorite,
+                                icon: Icons.thumb_down,
                                 label: 'Dislike',
                               )
                             : SlidableAction(
                                 onPressed: likeActivity,
                                 backgroundColor: Colors.green,
                                 foregroundColor: Colors.white,
-                                icon: Icons.favorite,
+                                icon: Icons.thumb_up,
                                 label: 'Like',
                               ),
                         SlidableAction(
                           onPressed: deleteActivity,
-                          backgroundColor: Color(0xFFFE4A49),
+                          backgroundColor: Colors.red,
                           foregroundColor: Colors.white,
                           icon: Icons.delete,
                           label: 'Delete',

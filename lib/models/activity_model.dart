@@ -1,11 +1,23 @@
-class ActivityModel {
+import 'package:hive/hive.dart';
+part 'activity_model.g.dart';
+
+@HiveType(typeId: 0)
+class ActivityModel extends HiveObject {
+  @HiveField(0)
   String activity;
+  @HiveField(1)
   String type;
+  @HiveField(2)
   int participants;
+  @HiveField(3)
   num price;
+  @HiveField(4)
   String link;
-  String key;
+  @HiveField(5)
+  String akey;
+  @HiveField(6)
   num accessibility;
+  @HiveField(7)
   bool isFavorite = false;
 
   ActivityModel({
@@ -14,7 +26,7 @@ class ActivityModel {
     required this.participants,
     required this.price,
     required this.link,
-    required this.key,
+    required this.akey,
     required this.accessibility,
   });
 
@@ -24,7 +36,7 @@ class ActivityModel {
         participants: json["participants"] ?? 0,
         price: json["price"] ?? 0.0,
         link: json["link"] ?? '',
-        key: json["key"] ?? '',
+        akey: json["key"] ?? '',
         accessibility: json["accessibility"] ?? 0.0,
       );
 

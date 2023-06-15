@@ -2,6 +2,7 @@ import 'package:activity_click/providers/activity_data_provider.dart';
 import 'package:activity_click/screens/favorite_activities.dart';
 import 'package:activity_click/screens/history_activities.dart';
 import 'package:activity_click/utilities/launch_link.dart';
+import 'package:activity_click/widgets/tune_sheet.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,6 +24,7 @@ class Home extends StatelessWidget {
         actions: [
           IconButton(
               onPressed: () {
+                postMdl.getActivitiesDB();
                 Navigator.push(
                   context,
                   MaterialPageRoute(
@@ -32,11 +34,22 @@ class Home extends StatelessWidget {
               icon: const Icon(Icons.history)),
           IconButton(
               onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const FavoriteActivities()),
-                );
+                postMdl.getFavoriteActivitiesDB().then((value) {
+                  if (postMdl.listOfFavoriteActivities.isNotEmpty) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const FavoriteActivities()),
+                    );
+                  } else {
+                    const snackBar = SnackBar(
+                      content: Text('Add favorite activities!'),
+                      duration: Duration(milliseconds: 1500),
+                    );
+
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+                  }
+                });
               },
               icon: const Icon(Icons.favorite))
         ],
@@ -64,22 +77,7 @@ class Home extends StatelessWidget {
                 context: context,
                 isScrollControlled: true,
                 builder: (BuildContext context) {
-                  return SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.8,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        mainAxisSize: MainAxisSize.min,
-                        children: <Widget>[
-                          const Text('Modal BottomSheet'),
-                          ElevatedButton(
-                            child: const Text('Close BottomSheet'),
-                            onPressed: () => Navigator.pop(context),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
+                  return const TuneSheet();
                 },
               ),
             },
@@ -94,32 +92,36 @@ class Home extends StatelessWidget {
             if (postMdl.loading == true) ...[
               const Center(
                   heightFactor: 5.0, child: CircularProgressIndicator())
-            ] else if (postMdl.listOfActivityModels.isEmpty) ...[
+            ] else if (postMdl.model == null) ...[
               Center(child: Image.asset('images/4-06.png'))
-            ] else if (postMdl.listOfActivityModels.isNotEmpty) ...[
+            ] else if (postMdl.model != null) ...[
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.only(top: 50.0),
-                    child: Text(
-                      postMdl.listOfActivityModels.last!.type,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 32),
-                    ),
+                  const SizedBox(
+                    height: 20,
                   ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Card(
                       child: Column(
                         children: [
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(top: 15.0, bottom: 15.0),
+                            child: Text(
+                              postMdl.model!.type.toUpperCase(),
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 32),
+                            ),
+                          ),
                           ListTile(
                             leading: const Icon(
                               Icons.sports_sharp,
                               size: 35,
                             ),
                             title: Text(
-                              postMdl.listOfActivityModels.last!.activity,
+                              postMdl.model!.activity,
                               style: TextStyle(fontSize: 20),
                             ),
                           ),
@@ -130,7 +132,7 @@ class Home extends StatelessWidget {
                               size: 35,
                             ),
                             title: Text(
-                              "Participants: ${postMdl.listOfActivityModels.last!.participants}",
+                              "Participants: ${postMdl.model!.participants}",
                               style: TextStyle(fontSize: 20),
                             ),
                           ),
@@ -140,7 +142,7 @@ class Home extends StatelessWidget {
                               size: 35,
                             ),
                             title: Text(
-                              "Price: ${postMdl.listOfActivityModels.last!.price}",
+                              "Price: ${postMdl.model!.price}",
                               style: TextStyle(fontSize: 20),
                             ),
                           ),
@@ -150,7 +152,7 @@ class Home extends StatelessWidget {
                               size: 35,
                             ),
                             title: Text(
-                              "Accessibility: ${postMdl.listOfActivityModels.last!.accessibility}",
+                              "Accessibility: ${postMdl.model!.accessibility}",
                               style: TextStyle(fontSize: 20),
                             ),
                           ),
@@ -162,14 +164,14 @@ class Home extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      postMdl.listOfActivityModels.last!.link != ''
+                      postMdl.model!.link != ''
                           ? Padding(
                               padding: const EdgeInsets.symmetric(
                                   vertical: 10, horizontal: 20),
                               child: ElevatedButton(
                                 onPressed: () {
-                                  final Uri _url = Uri.parse(
-                                      postMdl.listOfActivityModels.last!.link);
+                                  final Uri _url =
+                                      Uri.parse(postMdl.model!.link);
                                   launchInWebViewOrVC(_url);
                                 },
                                 style: ElevatedButton.styleFrom(
@@ -187,18 +189,16 @@ class Home extends StatelessWidget {
                             vertical: 10, horizontal: 20),
                         child: ElevatedButton(
                           onPressed: () {
-                            postMdl.listOfActivityModels.last!.isFavorite
-                                ? postMdl.unlikeActivity(
-                                    postMdl.listOfActivityModels.last!)
-                                : postMdl.likeActivity(
-                                    postMdl.listOfActivityModels.last!);
+                            postMdl.model!.isFavorite
+                                ? postMdl.unlikeActivity(postMdl.model!)
+                                : postMdl.likeActivity(postMdl.model!);
                           },
                           style: ElevatedButton.styleFrom(
                             shape: CircleBorder(),
                             padding: EdgeInsets.all(20),
                             // <-- Splash color
                           ),
-                          child: postMdl.listOfActivityModels.last!.isFavorite
+                          child: postMdl.model!.isFavorite
                               ? const Icon(
                                   Icons.favorite,
                                   size: 35,

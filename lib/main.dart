@@ -1,18 +1,17 @@
+import 'package:activity_click/models/activity_model.dart';
 import 'package:activity_click/providers/activity_data_provider.dart';
 import 'package:activity_click/screens/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:provider/single_child_widget.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
-void main() {
-  runApp(MultiProvider(providers: providers, child: const MainApp()));
+Future<void> main() async {
+  await Hive.initFlutter();
+  Hive.registerAdapter(ActivityModelAdapter());
+  runApp(ListenableProvider(
+      create: (_) => ActivityDataProvider(), child: const MainApp()));
 }
-
-List<SingleChildWidget> providers = [
-  ChangeNotifierProvider<ActivityDataProvider>(
-      create: (_) => ActivityDataProvider()),
-  Provider<bool>(create: ((context) => true)),
-];
 
 class MainApp extends StatelessWidget {
   const MainApp({super.key});
@@ -24,6 +23,11 @@ class MainApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         useMaterial3: true,
+        colorSchemeSeed: Colors.blue,
+      ),
+      darkTheme: ThemeData(
+        useMaterial3: true,
+        brightness: Brightness.dark,
         colorSchemeSeed: Colors.blue,
       ),
       home: const Home(),
